@@ -24,6 +24,9 @@ class _ExpensesPageState extends State<ExpensesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Despesas'),
+      ),
       body: Center(
           child: ListView(
         children: isEditing
