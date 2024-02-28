@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onfly/presentation/home/screens/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,7 +24,15 @@ class _LoginPageState extends State<LoginPage> {
           TextFormField(
             controller: _passwordController,
           ),
-          ElevatedButton(onPressed: () {}, child: const Text('Login')),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                );
+              },
+              child: const Text('Login')),
         ],
       ),
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onfly/presentation/common/widgets/expense_list_tile.dart';
+import 'package:onfly/presentation/corporate_card/screens/corporate_card_page.dart';
+import 'package:onfly/presentation/travels/screens/travels_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,11 +22,23 @@ class _HomePageState extends State<HomePage> {
           Row(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const CorporateCard(),
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.credit_card),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const TravelsPage(),
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.travel_explore),
               ),
             ],

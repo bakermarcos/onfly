@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onfly/presentation/expenses/screens/expense_details_page.dart';
 
 class ExpenseListTile extends StatelessWidget {
   const ExpenseListTile({super.key});
@@ -17,7 +18,13 @@ class ExpenseListTile extends StatelessWidget {
         children: [
           const Text('Data'),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ExpenseDetailsPage(),
+                ),
+              );
+            },
             child: const Text('Editar'),
           ),
         ],

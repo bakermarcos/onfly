@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ExpensesPage extends StatefulWidget {
-  const ExpensesPage({super.key});
+class ExpenseDetailsPage extends StatefulWidget {
+  const ExpenseDetailsPage({super.key});
 
   @override
-  State<ExpensesPage> createState() => _ExpensesPageState();
+  State<ExpenseDetailsPage> createState() => _ExpenseDetailsPageState();
 }
 
-class _ExpensesPageState extends State<ExpensesPage> {
+class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
   bool isEditing = false;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
