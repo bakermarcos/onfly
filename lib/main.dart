@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:onfly/view/login_page.dart';
+import 'package:onfly/presentation/login/screens/login_page.dart';
 
 void main() {
   runApp(const MyApp());
