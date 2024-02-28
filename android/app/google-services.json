@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "930130419001",
+    "project_id": "onfly-6529d",
+    "storage_bucket": "onfly-6529d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930130419001:android:b15cc3a7dec64061f3dce8",
+        "android_client_info": {
+          "package_name": "com.example.onfly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtcaWi1czSeASC1LFienWtjJitXHDNbMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
