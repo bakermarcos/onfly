@@ -27,40 +27,66 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
       appBar: AppBar(
         title: Text('Despesas'),
       ),
-      body: Center(
-          child: ListView(
-        children: isEditing
-            ? [
-                Text(_nameController.text),
-                Text(_dateController.text),
-                Text(_valueController.text),
-                ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        isEditing = true;
-                      });
-                    },
-                    child: const Text('Editar')),
-              ]
-            : [
-                TextFormField(
-                  controller: _nameController,
-                ),
-                TextFormField(
-                  controller: _dateController,
-                ),
-                TextFormField(
-                  controller: _valueController,
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        isEditing = false;
-                      });
-                    },
-                    child: const Text('Finalizar')),
-              ],
-      )),
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Center(
+            child: ListView(
+                children: isEditing
+                    ? [
+                        TextFormField(
+                          controller: _nameController,
+                        ),
+                        TextFormField(
+                          controller: _dateController,
+                        ),
+                        TextFormField(
+                          controller: _valueController,
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                isEditing = false;
+                              });
+                            },
+                            child: const Text('Finalizar')),
+                      ]
+                    : [
+                        Text(
+                          _nameController.text,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          _dateController.text,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          _valueController.text,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                isEditing = true;
+                              });
+                            },
+                            child: const Text('Editar')),
+                      ])),
+      ),
     );
   }
 }

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:onfly/presentation/common/widgets/expense_list_tile.dart';
 import 'package:onfly/presentation/corporate_card/screens/corporate_card_page.dart';
 import 'package:onfly/presentation/travels/screens/travels_page.dart';
@@ -17,50 +19,70 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Bem vindo, Usuário'),
       ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const CorporateCard(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.credit_card),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const TravelsPage(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.travel_explore),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              const Text('Despesas'),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.add),
-              ),
-            ],
-          ),
-          Expanded(
-            child: ListView(
-              children: const [
-                ExpenseListTile(),
-                ExpenseListTile(),
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const CorporateCardPage(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.credit_card,
+                    size: 50,
+                  ),
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const TravelsPage(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.travel_explore,
+                    size: 50,
+                  ),
+                ),
               ],
             ),
-          )
-        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Despesas',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.add_circle, size: 30,),
+                ),
+              ],
+            ),
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                children: const [
+                  ExpenseListTile(),
+                  ExpenseListTile(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
