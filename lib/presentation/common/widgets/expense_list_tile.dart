@@ -14,7 +14,7 @@ class ExpenseListTile extends StatelessWidget {
             builder: (context) => const ExpenseDetailsPage(),
           ),
         ),
-        leading: const Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(

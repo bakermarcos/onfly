@@ -13,7 +13,7 @@ class _TravelsPageState extends State<TravelsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Viagens'),
+        title: const Text('Viagens'),
       ),
       body: ListView(
         children: const [

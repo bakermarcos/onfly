@@ -8,7 +8,7 @@ class TravelListTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
-        leading: Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(

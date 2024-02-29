@@ -25,7 +25,7 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Despesas'),
+        title: const Text('Despesas'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -53,7 +53,7 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
                     : [
                         Text(
                           _nameController.text,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                           ),
                         ),
@@ -62,7 +62,7 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
                         ),
                         Text(
                           _dateController.text,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                           ),
                         ),
@@ -71,7 +71,7 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
                         ),
                         Text(
                           _valueController.text,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                           ),
                         ),

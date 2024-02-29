@@ -18,7 +18,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastro'),
+        title: const Text('Cadastro'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -28,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Nome'),
+                const Text('Nome'),
                 TextFormField(
                   decoration: const InputDecoration(
                     labelStyle: TextStyle(color: Colors.grey),
@@ -39,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text('Empresa'),
+                const Text('Empresa'),
                 TextFormField(
                   decoration: const InputDecoration(
                     labelStyle: TextStyle(color: Colors.grey),
@@ -50,7 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text('E-mail'),
+                const Text('E-mail'),
                 TextFormField(
                   decoration: const InputDecoration(
                     labelStyle: TextStyle(color: Colors.grey),
@@ -61,7 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text('Senha'),
+                const Text('Senha'),
                 TextFormField(
                   decoration: const InputDecoration(
                     labelStyle: TextStyle(color: Colors.grey),

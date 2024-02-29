@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
             TextFormField(
               obscureText: _passwordVisible,
               decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.grey),
+                labelStyle: const TextStyle(color: Colors.grey),
                 labelText: 'Senha',
                 suffixIcon: IconButton(
                     onPressed: () {
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 );
               },
-              child: Text('Cadastrar'),
+              child: const Text('Cadastrar'),
             ),
           ],
         ),

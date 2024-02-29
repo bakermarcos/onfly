@@ -13,7 +13,7 @@ class _CorporateCardPageState extends State<CorporateCardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cartão corporativo'),
+        title: const Text('Cartão corporativo'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:onfly/presentation/common/widgets/expense_list_tile.dart';
 import 'package:onfly/presentation/corporate_card/screens/corporate_card_page.dart';
 import 'package:onfly/presentation/travels/screens/travels_page.dart';
@@ -17,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bem vindo, Usuário'),
+        title: const Text('Bem vindo, Usuário'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
