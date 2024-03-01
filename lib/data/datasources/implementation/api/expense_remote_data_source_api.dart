@@ -1,15 +1,17 @@
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:onfly/data/datasources/remote/expense_data_source.dart';
+import 'package:onfly/data/datasources/remote/api/expense_data_source_api.dart';
 import 'package:onfly/domain/entities/expense.dart';
 import 'package:onfly/domain/entities/user_app.dart';
 
-class RemoteExpenseDataSource implements ExpenseDataSource {
+class RemoteExpenseDataSourceApi implements ExpenseDataSourceApi {
+  final FirebaseDatabase _firebaseDatabase;
+  RemoteExpenseDataSourceApi(this._firebaseDatabase);
   @override
   Future<Expense> editExpense(
       {required UserApp userApp, required Expense expense}) async {
     final DatabaseReference ref =
-        FirebaseDatabase.instance.ref('${userApp.id}/expenses/${expense.id}');
+        _firebaseDatabase.ref('${userApp.id}/expenses/${expense.id}');
 
     try {
       await ref.set(expense);
@@ -23,7 +25,7 @@ class RemoteExpenseDataSource implements ExpenseDataSource {
   Future<Expense> getExpenseData(
       {required UserApp userApp, required Expense expense}) async {
     final DatabaseReference ref =
-        FirebaseDatabase.instance.ref('${userApp.id}/expenses/${expense.id}');
+        _firebaseDatabase.ref('${userApp.id}/expenses/${expense.id}');
 
     try {
       final expenseDataSnapshot = await ref.get();
@@ -39,7 +41,7 @@ class RemoteExpenseDataSource implements ExpenseDataSource {
   Future<List<Expense>> getExpenses({required UserApp userApp}) async {
     List<Expense> expenses = [];
     final DatabaseReference ref =
-        FirebaseDatabase.instance.ref('${userApp.id}/expenses');
+        _firebaseDatabase.ref('${userApp.id}/expenses');
 
     try {
       final expensesSnapshot = await ref.get();
@@ -56,7 +58,7 @@ class RemoteExpenseDataSource implements ExpenseDataSource {
   Future<List<Expense>> updateExpenses(
       {required UserApp userApp, required List<Expense> expenses}) async {
     final DatabaseReference ref =
-        FirebaseDatabase.instance.ref('${userApp.id}/expenses');
+        _firebaseDatabase.ref('${userApp.id}/expenses');
     try {
       final expensesSnapshot = await ref.get();
       if (expenses == expensesSnapshot.value as List ||

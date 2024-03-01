@@ -1,18 +1,19 @@
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:onfly/data/datasources/remote/card_data_source.dart';
+import 'package:onfly/data/datasources/remote/api/card_data_source_api.dart';
 import 'package:onfly/domain/entities/corporate_card.dart';
 import 'package:onfly/domain/entities/user_app.dart';
 
-class RemoteCardDataSource implements CardDataSource {
+class RemoteCardDataSourceApi implements CardDataSourceApi {
+  final FirebaseDatabase _firebaseDatabase;
+  RemoteCardDataSourceApi(this._firebaseDatabase);
   @override
   Future<CorporateCard> getCardData({
     required UserApp userApp,
   }) async {
     CorporateCard card;
-    final DatabaseReference ref =
-        FirebaseDatabase.instance.ref('${userApp.id}/card');
+    final DatabaseReference ref = _firebaseDatabase.ref('${userApp.id}/card');
 
     try {
       final cardDataSnapshot = await ref.get();
@@ -28,7 +29,7 @@ class RemoteCardDataSource implements CardDataSource {
   Future<int> updateBalance(
       {required UserApp userApp, required int balance}) async {
     final DatabaseReference ref =
-        FirebaseDatabase.instance.ref('${userApp.id}/card/balance');
+        _firebaseDatabase.ref('${userApp.id}/card/balance');
 
     try {
       await ref.set(balance);

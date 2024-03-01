@@ -1,16 +1,18 @@
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:onfly/data/datasources/remote/travel_data_source.dart';
+import 'package:onfly/data/datasources/remote/api/travel_data_source_api.dart';
 import 'package:onfly/domain/entities/travel.dart';
 import 'package:onfly/domain/entities/user_app.dart';
 
-class RemoteTravelDataSource extends TravelDataSource {
+class RemoteTravelDataSourceApi extends TravelDataSourceApi {
+  final FirebaseDatabase _firebaseDatabase;
+  RemoteTravelDataSourceApi(this._firebaseDatabase);
   @override
   Future<Travel> getTravelData(
       {required UserApp userApp, required Travel travel}) async {
     final DatabaseReference ref =
-        FirebaseDatabase.instance.ref('${userApp.id}/travels/${travel.id}');
+        _firebaseDatabase.ref('${userApp.id}/travels/${travel.id}');
 
     try {
       final travelDataSnapshot = await ref.get();
@@ -25,7 +27,7 @@ class RemoteTravelDataSource extends TravelDataSource {
   Future<List<Travel>> getTravels({required UserApp userApp}) async {
     List<Travel> travels = [];
     final DatabaseReference ref =
-        FirebaseDatabase.instance.ref('${userApp.id}/travels');
+        _firebaseDatabase.ref('${userApp.id}/travels');
 
     try {
       final travelsSnapshot = await ref.get();
@@ -42,7 +44,7 @@ class RemoteTravelDataSource extends TravelDataSource {
   Future<List<Travel>> updateTravels(
       {required UserApp userApp, required List<Travel> travels}) async {
     final DatabaseReference ref =
-        FirebaseDatabase.instance.ref('${userApp.id}/travels');
+        _firebaseDatabase.ref('${userApp.id}/travels');
     try {
       final travelsSnapshot = await ref.get();
       if (travels == travelsSnapshot.value as List ||

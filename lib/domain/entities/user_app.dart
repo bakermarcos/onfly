@@ -6,11 +6,13 @@ class UserApp {
   String name;
   String email;
   String password;
+  bool isLogged;
   UserApp({
     required this.id,
     required this.name,
     required this.email,
     required this.password,
+    this.isLogged = false,
   });
 
   UserApp copyWith({
@@ -18,12 +20,14 @@ class UserApp {
     String? name,
     String? email,
     String? password,
+    bool? isLogged,
   }) {
     return UserApp(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
       password: password ?? this.password,
+      isLogged: isLogged ?? this.isLogged,
     );
   }
 
@@ -33,6 +37,7 @@ class UserApp {
       'name': name,
       'email': email,
       'password': password,
+      'isLogged': isLogged,
     };
   }
 
@@ -42,34 +47,37 @@ class UserApp {
       name: map['name'] as String,
       email: map['email'] as String,
       password: map['password'] as String,
+      isLogged: map['isLogged'] as bool,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UserApp.fromJson(String source) => UserApp.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserApp.fromJson(String source) =>
+      UserApp.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'UserApp(id: $id, name: $name, email: $email, password: $password)';
+    return 'UserApp(id: $id, name: $name, email: $email, password: $password, isLogged: $isLogged)';
   }
 
   @override
   bool operator ==(covariant UserApp other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.name == name &&
-      other.email == email &&
-      other.password == password;
+
+    return other.id == id &&
+        other.name == name &&
+        other.email == email &&
+        other.password == password &&
+        other.isLogged == isLogged;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      name.hashCode ^
-      email.hashCode ^
-      password.hashCode;
+        name.hashCode ^
+        email.hashCode ^
+        password.hashCode ^
+        isLogged.hashCode;
   }
 }

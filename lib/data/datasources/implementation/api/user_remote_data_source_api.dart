@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:onfly/data/datasources/remote/user_data_source.dart';
+import 'package:onfly/data/datasources/remote/api/user_data_source_api.dart';
 import 'package:onfly/domain/entities/user_app.dart';
 
-class RemoteUserDataSource implements UserDataSource {
+class RemoteUserDataSourceApi implements UserDataSourceApi {
+  final FirebaseAuth _firebaseAuth;
+  RemoteUserDataSourceApi(this._firebaseAuth);
+
   @override
   Future<UserApp> login(
       {required String email, required String password}) async {
-    FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
     try {
       UserCredential userCredential = await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
@@ -17,6 +18,7 @@ class RemoteUserDataSource implements UserDataSource {
         name: userCredential.user!.displayName!,
         email: email,
         password: password,
+        isLogged: true,
       );
     } catch (error) {
       rethrow;
@@ -25,7 +27,6 @@ class RemoteUserDataSource implements UserDataSource {
 
   @override
   Future<UserApp> registerUser({required UserApp userApp}) async {
-    FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: userApp.email, password: userApp.password);

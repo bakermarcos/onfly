@@ -8,7 +8,7 @@ import 'package:onfly/domain/entities/expense.dart';
 class CorporateCard {
   final int id;
   final int cardNumber;
-  final int balance;
+  int balance;
   final List<Expense> expenses;
 
   CorporateCard({
@@ -46,13 +46,18 @@ class CorporateCard {
       id: map['id'] as int,
       cardNumber: map['cardNumber'] as int,
       balance: map['balance'] as int,
-      expenses: List<Expense>.from((map['expenses'] as List<int>).map<Expense>((x) => Expense.fromMap(x as Map<String,dynamic>),),),
+      expenses: List<Expense>.from(
+        (map['expenses'] as List<int>).map<Expense>(
+          (x) => Expense.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory CorporateCard.fromJson(String source) => CorporateCard.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CorporateCard.fromJson(String source) =>
+      CorporateCard.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -62,19 +67,18 @@ class CorporateCard {
   @override
   bool operator ==(covariant CorporateCard other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.cardNumber == cardNumber &&
-      other.balance == balance &&
-      listEquals(other.expenses, expenses);
+
+    return other.id == id &&
+        other.cardNumber == cardNumber &&
+        other.balance == balance &&
+        listEquals(other.expenses, expenses);
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      cardNumber.hashCode ^
-      balance.hashCode ^
-      expenses.hashCode;
+        cardNumber.hashCode ^
+        balance.hashCode ^
+        expenses.hashCode;
   }
 }

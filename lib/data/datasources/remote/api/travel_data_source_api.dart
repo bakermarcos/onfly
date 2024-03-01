@@ -1,7 +1,7 @@
 import 'package:onfly/domain/entities/travel.dart';
 import 'package:onfly/domain/entities/user_app.dart';
 
-abstract class TravelDataSource {
+abstract class TravelDataSourceApi {
   Future<Travel> getTravelData(
       {required UserApp userApp, required Travel travel});
 

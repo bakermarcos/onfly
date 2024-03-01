@@ -1,5 +1,12 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:onfly/domain/entities/corporate_card.dart';
+import 'package:onfly/domain/entities/expense.dart';
+import 'package:onfly/domain/entities/travel.dart';
+import 'package:onfly/domain/entities/user_app.dart';
 import 'package:onfly/firebase_options.dart';
 import 'package:onfly/presentation/login/screens/login_page.dart';
 
@@ -8,7 +15,22 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await initHive();
   runApp(const MyApp());
+}
+
+Future<void> initHive() async {
+  await Hive.initFlutter();
+
+  await Hive.openBox<UserApp>('user_data');
+  await Hive.openBox<Expense>('expenses');
+  await Hive.openBox<Travel>('travels');
+  await Hive.openBox<CorporateCard>('card_data');
+
+  await Hive.openBox<UserApp>('sync_user_data');
+  await Hive.openBox<Expense>('sync_expenses');
+  await Hive.openBox<Travel>('sync_travels');
+  await Hive.openBox<CorporateCard>('sync_card_data');
 }
 
 class MyApp extends StatelessWidget {

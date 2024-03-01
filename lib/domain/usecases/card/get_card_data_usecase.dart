@@ -5,7 +5,7 @@ import 'package:onfly/domain/entities/user_app.dart';
 class GetCardDataUseCase {
   final CardRepository cardRepository;
   GetCardDataUseCase(this.cardRepository);
-  Future<CorporateCard> call({required UserApp userApp}) async {
-    return await cardRepository.getCardData(userApp: userApp);
+  Future<CorporateCard> call({required UserApp userApp, required CorporateCard card}) async {
+    return await cardRepository.getCardData(userApp: userApp, card: card);
   }
 }

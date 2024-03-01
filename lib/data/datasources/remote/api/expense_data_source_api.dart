@@ -1,7 +1,7 @@
 import 'package:onfly/domain/entities/expense.dart';
 import 'package:onfly/domain/entities/user_app.dart';
 
-abstract class ExpenseDataSource {
+abstract class ExpenseDataSourceApi {
   Future<Expense> getExpenseData(
       {required UserApp userApp, required Expense expense});
 

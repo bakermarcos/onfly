@@ -1,7 +1,7 @@
 import 'package:onfly/domain/entities/corporate_card.dart';
 import 'package:onfly/domain/entities/user_app.dart';
 
-abstract class CardDataSource {
+abstract class CardDataSourceApi {
   Future<CorporateCard> getCardData({
     required UserApp userApp,
   });

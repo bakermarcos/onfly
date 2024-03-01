@@ -1,20 +1,42 @@
-import 'package:onfly/data/datasources/remote/card_data_source.dart';
+import 'package:onfly/data/datasources/remote/api/card_data_source_api.dart';
+import 'package:onfly/data/datasources/remote/local/card_data_source_local.dart';
 import 'package:onfly/data/repositories/repositories/card_repository.dart';
 import 'package:onfly/domain/entities/corporate_card.dart';
 import 'package:onfly/domain/entities/user_app.dart';
 
 class CardRepositoryImp implements CardRepository {
-  final CardDataSource cardDataSource;
-  CardRepositoryImp(this.cardDataSource);
+  final CardDataSourceApi cardDataSourceApi;
+  final CardDataSourceLocal cardDataSourceLocal;
+  CardRepositoryImp(this.cardDataSourceApi, this.cardDataSourceLocal);
   @override
-  Future<CorporateCard> getCardData({required UserApp userApp}) async {
-    return await cardDataSource.getCardData(userApp: userApp);
+  Future<CorporateCard> getCardData(
+      {required UserApp userApp, required CorporateCard card}) async {
+    CorporateCard response;
+    try {
+      response = await cardDataSourceApi.getCardData(userApp: userApp);
+      await cardDataSourceLocal.updateCardData(card: response);
+    } catch (e) {
+      response = await cardDataSourceLocal.getCardData(card: card);
+      rethrow;
+    }
+    return response;
   }
 
   @override
   Future<int> updateBalance(
-      {required UserApp userApp, required int balance}) async {
-    return await cardDataSource.updateBalance(
-        userApp: userApp, balance: balance);
+      {required UserApp userApp,
+      required int balance,
+      required CorporateCard card}) async {
+    int response;
+    try {
+      response = await cardDataSourceApi.updateBalance(
+          userApp: userApp, balance: balance);
+      await cardDataSourceLocal.updateBalance(balance: response, card: card);
+    } catch (e) {
+      response = await cardDataSourceLocal.updateBalance(
+          balance: balance, isSync: true, card: card);
+      rethrow;
+    }
+    return response;
   }
 }
