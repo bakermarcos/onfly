@@ -1,9 +1,10 @@
-import 'package:onfly/domain/entities/user.dart';
+import 'package:onfly/domain/entities/user_app.dart';
 
 abstract class UserDataSource {
- Future<User> getUserData();
+  Future<UserApp> registerUser({required UserApp userApp});
 
- Future<String> registerUser();
-
- Future<User> login();
+  Future<UserApp> login({
+    required String email,
+    required String password,
+  });
 }

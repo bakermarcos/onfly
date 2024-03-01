@@ -1,8 +1,76 @@
-class Expense{
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+class Expense {
   final int id;
   final String name;
   final double value;
   final String date;
 
-  Expense({required this.id, required this.name, required this.value, required this.date});
+  Expense({
+    required this.id,
+    required this.name,
+    required this.value,
+    required this.date,
+  });
+
+  Expense copyWith({
+    int? id,
+    String? name,
+    double? value,
+    String? date,
+  }) {
+    return Expense(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      value: value ?? this.value,
+      date: date ?? this.date,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'value': value,
+      'date': date,
+    };
+  }
+
+  factory Expense.fromMap(Map<String, dynamic> map) {
+    return Expense(
+      id: map['id'] as int,
+      name: map['name'] as String,
+      value: map['value'] as double,
+      date: map['date'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Expense.fromJson(String source) => Expense.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'Expense(id: $id, name: $name, value: $value, date: $date)';
+  }
+
+  @override
+  bool operator ==(covariant Expense other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.id == id &&
+      other.name == name &&
+      other.value == value &&
+      other.date == date;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+      name.hashCode ^
+      value.hashCode ^
+      date.hashCode;
+  }
 }

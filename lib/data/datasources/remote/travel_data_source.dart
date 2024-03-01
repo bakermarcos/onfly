@@ -1,10 +1,12 @@
-
 import 'package:onfly/domain/entities/travel.dart';
+import 'package:onfly/domain/entities/user_app.dart';
 
 abstract class TravelDataSource {
- Future<Travel> getTravelData();
+  Future<Travel> getTravelData(
+      {required UserApp userApp, required Travel travel});
 
- Future<List<Travel>> getTravels();
+  Future<List<Travel>> getTravels({required UserApp userApp});
 
- Future<List<Travel>> updateTravels({required List<Travel> travels});
+  Future<List<Travel>> updateTravels(
+      {required UserApp userApp, required List<Travel> travels});
 }

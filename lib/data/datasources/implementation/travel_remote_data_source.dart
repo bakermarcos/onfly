@@ -1,22 +1,59 @@
+import 'dart:convert';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:onfly/data/datasources/remote/travel_data_source.dart';
 import 'package:onfly/domain/entities/travel.dart';
+import 'package:onfly/domain/entities/user_app.dart';
 
 class RemoteTravelDataSource extends TravelDataSource {
   @override
-  Future<Travel> getTravelData() {
-    // TODO: implement getTravelData
-    throw UnimplementedError();
+  Future<Travel> getTravelData(
+      {required UserApp userApp, required Travel travel}) async {
+    final DatabaseReference ref =
+        FirebaseDatabase.instance.ref('${userApp.id}/travels/${travel.id}');
+
+    try {
+      final travelDataSnapshot = await ref.get();
+      travel = Travel.fromJson(jsonDecode(travelDataSnapshot.value as String));
+      return travel;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
-  Future<List<Travel>> getTravels() {
-    // TODO: implement getTravels
-    throw UnimplementedError();
+  Future<List<Travel>> getTravels({required UserApp userApp}) async {
+    List<Travel> travels = [];
+    final DatabaseReference ref =
+        FirebaseDatabase.instance.ref('${userApp.id}/travels');
+
+    try {
+      final travelsSnapshot = await ref.get();
+      for (var travel in travelsSnapshot.value as List) {
+        travels.add(Travel.fromJson(jsonDecode(travel)));
+      }
+      return travels;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
-  Future<List<Travel>> updateTravels({required List<Travel> travels}) {
-    // TODO: implement updateTravels
-    throw UnimplementedError();
+  Future<List<Travel>> updateTravels(
+      {required UserApp userApp, required List<Travel> travels}) async {
+    final DatabaseReference ref =
+        FirebaseDatabase.instance.ref('${userApp.id}/travels');
+    try {
+      final travelsSnapshot = await ref.get();
+      if (travels == travelsSnapshot.value as List ||
+          travels.length > (travelsSnapshot.value as List).length) {
+        await ref.set(travels);
+      } else {
+        travels = await getTravels(userApp: userApp);
+      }
+      return travels;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

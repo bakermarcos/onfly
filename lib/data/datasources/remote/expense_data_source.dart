@@ -1,11 +1,15 @@
 import 'package:onfly/domain/entities/expense.dart';
+import 'package:onfly/domain/entities/user_app.dart';
 
 abstract class ExpenseDataSource {
- Future<Expense> getExpenseData();
+  Future<Expense> getExpenseData(
+      {required UserApp userApp, required Expense expense});
 
- Future<List<Expense>> getExpenses();
+  Future<List<Expense>> getExpenses({required UserApp userApp});
 
- Future<String> editExpense({required Expense expense});
+  Future<Expense> editExpense(
+      {required UserApp userApp, required Expense expense});
 
- Future<List<Expense>> updateExpenses({required List<Expense> expenses});
+  Future<List<Expense>> updateExpenses(
+      {required UserApp userApp, required List<Expense> expenses});
 }
