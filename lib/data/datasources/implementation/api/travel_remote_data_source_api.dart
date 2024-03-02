@@ -5,7 +5,7 @@ import 'package:onfly/data/datasources/remote/api/travel_data_source_api.dart';
 import 'package:onfly/domain/entities/travel.dart';
 import 'package:onfly/domain/entities/user_app.dart';
 
-class RemoteTravelDataSourceApi extends TravelDataSourceApi {
+class RemoteTravelDataSourceApi implements TravelDataSourceApi {
   final FirebaseDatabase _firebaseDatabase;
   RemoteTravelDataSourceApi(this._firebaseDatabase);
   @override

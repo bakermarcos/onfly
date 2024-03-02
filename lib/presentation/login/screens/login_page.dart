@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:onfly/presentation/home/screens/home_page.dart';
+import 'package:onfly/presentation/login/cubit/login_cubit.dart';
 import 'package:onfly/presentation/register/screens/register_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,78 +13,91 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _userController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _passwordVisible = false;
+  final LoginCubit cubit = LoginCubit();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Login',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelStyle: TextStyle(color: Colors.grey),
-                labelText: 'E-mail',
+      body: BlocConsumer<LoginCubit, LoginState>(
+        bloc: cubit,
+        listener: (context, state) {
+          if (state is LoginLoadUserState) {
+            cubit.loadUserData();
+          }
+          if (state is LoginErrorState) {
+            Fluttertoast.showToast(msg: state.message);
+          }
+          if (state is LoginLoadedState) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
               ),
-              controller: _userController,
-            ),
-            TextFormField(
-              obscureText: _passwordVisible,
-              decoration: InputDecoration(
-                labelStyle: const TextStyle(color: Colors.grey),
-                labelText: 'Senha',
-                suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _passwordVisible = !_passwordVisible;
-                      });
-                    },
-                    icon: Icon(
-                      _passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Colors.grey,
-                    )),
+            );
+          }
+          if (state is LoginGoToRegisterPageState) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const RegisterPage(),
               ),
-              controller: _passwordController,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const HomePage(),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Login',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelStyle: TextStyle(color: Colors.grey),
+                    labelText: 'E-mail',
                   ),
-                );
-              },
-              child: const Text('Login'),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const RegisterPage(),
+                  controller: cubit.loginController,
+                ),
+                TextFormField(
+                  obscureText: cubit.passwordVisible,
+                  decoration: InputDecoration(
+                    labelStyle: const TextStyle(color: Colors.grey),
+                    labelText: 'Senha',
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          cubit.passwordVisible = !cubit.passwordVisible;
+                        },
+                        icon: Icon(
+                          cubit.passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.grey,
+                        )),
                   ),
-                );
-              },
-              child: const Text('Cadastrar'),
+                  controller: cubit.passwordController,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                state is LoginLoadingState
+                    ? ElevatedButton(
+                        onPressed: () => cubit.login(),
+                        child: const Text('Login'),
+                      )
+                    : const Center(child: CircularProgressIndicator()),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton(
+                  onPressed: () => cubit.goToRegisterPage(),
+                  child: const Text('Cadastrar'),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

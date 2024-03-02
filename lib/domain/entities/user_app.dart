@@ -15,6 +15,15 @@ class UserApp {
     this.isLogged = false,
   });
 
+  static UserApp empty() {
+    return UserApp(
+      id: '0',
+      name: 'name',
+      email: 'email@email.com',
+      password: 'password',
+    );
+  }
+
   UserApp copyWith({
     String? id,
     String? name,
