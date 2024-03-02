@@ -11,10 +11,10 @@ class ExpenseDetailsPage extends StatefulWidget {
 }
 
 class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
-  late ExpenseCubit cubit;
+  late ExpenseCubit cubit = ExpenseCubit();
   @override
   void initState() {
-    cubit = ExpenseCubit();
+    cubit.init();
     cubit.nameController.text = cubit.expense.name;
     cubit.dateController.text = cubit.expense.date;
     cubit.valueController.text = 'R\$ ${cubit.expense.value}';

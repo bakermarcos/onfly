@@ -14,10 +14,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late HomeCubit cubit;
+  late HomeCubit cubit = HomeCubit();
   @override
   void initState() {
-    cubit = HomeCubit();
+    cubit.init();
     super.initState();
   }
 

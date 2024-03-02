@@ -16,6 +16,12 @@ class _LoginPageState extends State<LoginPage> {
   final LoginCubit cubit = LoginCubit();
 
   @override
+  void initState() {
+    cubit.init();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<LoginCubit, LoginState>(
@@ -82,11 +88,11 @@ class _LoginPageState extends State<LoginPage> {
                   height: 10,
                 ),
                 state is LoginLoadingState
-                    ? ElevatedButton(
+                    ? const Center(child: CircularProgressIndicator())
+                    : ElevatedButton(
                         onPressed: () => cubit.login(),
                         child: const Text('Login'),
-                      )
-                    : const Center(child: CircularProgressIndicator()),
+                      ),
                 const SizedBox(
                   height: 10,
                 ),

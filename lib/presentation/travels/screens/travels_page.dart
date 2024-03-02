@@ -14,6 +14,12 @@ class TravelsPage extends StatefulWidget {
 class _TravelsPageState extends State<TravelsPage> {
   final TravelCubit cubit = TravelCubit();
   @override
+  void initState() {
+    cubit.init();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

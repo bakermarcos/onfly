@@ -12,10 +12,10 @@ class CorporateCardPage extends StatefulWidget {
 }
 
 class _CorporateCardPageState extends State<CorporateCardPage> {
-  late CorporateCardCubit cubit;
+  late CorporateCardCubit cubit = CorporateCardCubit();
   @override
   void initState() {
-    cubit = CorporateCardCubit();
+    cubit.init();
     super.initState();
   }
 

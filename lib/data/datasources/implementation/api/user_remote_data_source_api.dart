@@ -15,7 +15,7 @@ class RemoteUserDataSourceApi implements UserDataSourceApi {
 
       return UserApp(
         id: userCredential.user!.uid,
-        name: userCredential.user!.displayName!,
+        name: userCredential.user!.displayName??'Usuário',
         email: email,
         password: password,
         isLogged: true,

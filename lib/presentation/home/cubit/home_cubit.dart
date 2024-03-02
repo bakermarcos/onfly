@@ -39,6 +39,7 @@ class HomeCubit extends Cubit<HomeState> {
     _updateExpensesUseCase = UpdateExpensesUseCase(_expenseRepository);
     _getExpensesUseCase = GetExpensesUseCase(_expenseRepository);
     _userApp = Hive.box<UserApp>('user_data').values.first;
+    await getExpenses();
     _expenses = Hive.box<Expense>('expenses').values.toList();
   }
 
