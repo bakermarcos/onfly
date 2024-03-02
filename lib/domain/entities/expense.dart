@@ -1,10 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
+import 'package:hive_flutter/hive_flutter.dart';
+part 'expense.g.dart';
+@HiveType(typeId: 2)
 class Expense {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String name;
+  @HiveField(2)
   final String value;
+  @HiveField(3)
   final String date;
   Expense({
     required this.id,

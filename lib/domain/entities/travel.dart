@@ -1,11 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
+import 'package:hive_flutter/hive_flutter.dart';
+part 'travel.g.dart';
+@HiveType(typeId: 1)
 class Travel {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String airport;
+  @HiveField(2)
   final String airline;
+  @HiveField(3)
   final String date;
+  @HiveField(4)
   final String boardingPass;
   Travel({
     required this.id,

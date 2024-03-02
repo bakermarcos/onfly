@@ -15,13 +15,19 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await initHive();
+  await initHive().then((value) async => await openBoxes());
   runApp(const MyApp());
 }
 
 Future<void> initHive() async {
   await Hive.initFlutter();
+  Hive.registerAdapter(CorporateCardAdapter());
+  Hive.registerAdapter(ExpenseAdapter());
+  Hive.registerAdapter(TravelAdapter());
+  Hive.registerAdapter(UserAppAdapter());
+}
 
+Future<void> openBoxes() async {
   await Hive.openBox<UserApp>('user_data');
   await Hive.openBox<Expense>('expenses');
   await Hive.openBox<Travel>('travels');
