@@ -74,8 +74,11 @@ class _HomePageState extends State<HomePage> {
               child: ListView(
                 shrinkWrap: true,
                 children: const [
-                  ExpenseListTile(),
-                  ExpenseListTile(),
+                  ExpenseListTile(
+                    name: 'name',
+                    value: '50',
+                    date: '10/02/2024',
+                  ),
                 ],
               ),
             ),

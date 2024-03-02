@@ -6,10 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:onfly/domain/entities/expense.dart';
 
 class CorporateCard {
-  final int id;
-  final int cardNumber;
+  int id;
+  int cardNumber;
   int balance;
-  final List<Expense> expenses;
+  List<Expense> expenses;
 
   CorporateCard({
     required this.id,
@@ -58,6 +58,15 @@ class CorporateCard {
 
   factory CorporateCard.fromJson(String source) =>
       CorporateCard.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  static CorporateCard empty() {
+    return CorporateCard(
+      id: 0,
+      cardNumber: 0,
+      balance: 2000,
+      expenses: [],
+    );
+  }
 
   @override
   String toString() {
