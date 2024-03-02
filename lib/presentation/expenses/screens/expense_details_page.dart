@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:onfly/presentation/expenses/cubit/expense_cubit.dart';
 
 class ExpenseDetailsPage extends StatefulWidget {
   const ExpenseDetailsPage({super.key});
@@ -8,16 +11,13 @@ class ExpenseDetailsPage extends StatefulWidget {
 }
 
 class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
-  bool isEditing = false;
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _valueController = TextEditingController();
-
+  late ExpenseCubit cubit;
   @override
   void initState() {
-    _nameController.text = 'Nome despesa';
-    _dateController.text = 'Data';
-    _valueController.text = 'R\$ Valor';
+    cubit = ExpenseCubit();
+    cubit.nameController.text = cubit.expense.name;
+    cubit.dateController.text = cubit.expense.date;
+    cubit.valueController.text = 'R\$ ${cubit.expense.value}';
     super.initState();
   }
 
@@ -27,65 +27,73 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
       appBar: AppBar(
         title: const Text('Despesas'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Center(
-            child: ListView(
-                children: isEditing
-                    ? [
-                        TextFormField(
-                          controller: _nameController,
-                        ),
-                        TextFormField(
-                          controller: _dateController,
-                        ),
-                        TextFormField(
-                          controller: _valueController,
-                        ),
-                        ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                isEditing = false;
-                              });
-                            },
-                            child: const Text('Finalizar')),
-                      ]
-                    : [
-                        Text(
-                          _nameController.text,
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          _dateController.text,
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          _valueController.text,
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                isEditing = true;
-                              });
-                            },
-                            child: const Text('Editar')),
-                      ])),
+      body: BlocConsumer<ExpenseCubit, ExpenseState>(
+        bloc: cubit,
+        listener: (context, state) {
+          if (state is ExpenseErrorState) {
+            Fluttertoast.showToast(msg: state.message);
+          }
+        },
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+                child: ListView(
+                    children: state is ExpenseEditingState
+                        ? [
+                            TextFormField(
+                              controller: cubit.nameController,
+                            ),
+                            TextFormField(
+                              controller: cubit.dateController,
+                            ),
+                            TextFormField(
+                              controller: cubit.valueController,
+                            ),
+                            ElevatedButton(
+                                onPressed: () async {
+                                  await cubit.editExpense();
+                                },
+                                child: state is ExpenseLoadingState
+                                    ? const CircularProgressIndicator()
+                                    : const Text('Finalizar')),
+                          ]
+                        : [
+                            Text(
+                              cubit.nameController.text,
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              cubit.dateController.text,
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              cubit.valueController.text,
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  cubit.isEditing();
+                                },
+                                child: const Text('Editar')),
+                          ])),
+          );
+        },
       ),
     );
   }

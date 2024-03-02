@@ -4,9 +4,8 @@ import 'dart:convert';
 class Expense {
   final int id;
   final String name;
-  final double value;
+  final String value;
   final String date;
-
   Expense({
     required this.id,
     required this.name,
@@ -14,10 +13,19 @@ class Expense {
     required this.date,
   });
 
+  static Expense empty() {
+    return Expense(
+      id: 0,
+      name: 'name',
+      value: '0',
+      date: '10/01/2024',
+    );
+  }
+
   Expense copyWith({
     int? id,
     String? name,
-    double? value,
+    String? value,
     String? date,
   }) {
     return Expense(
@@ -41,14 +49,15 @@ class Expense {
     return Expense(
       id: map['id'] as int,
       name: map['name'] as String,
-      value: map['value'] as double,
+      value: map['value'] as String,
       date: map['date'] as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Expense.fromJson(String source) => Expense.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Expense.fromJson(String source) =>
+      Expense.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -58,19 +67,15 @@ class Expense {
   @override
   bool operator ==(covariant Expense other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.name == name &&
-      other.value == value &&
-      other.date == date;
+
+    return other.id == id &&
+        other.name == name &&
+        other.value == value &&
+        other.date == date;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^
-      name.hashCode ^
-      value.hashCode ^
-      date.hashCode;
+    return id.hashCode ^ name.hashCode ^ value.hashCode ^ date.hashCode;
   }
 }
