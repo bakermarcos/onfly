@@ -38,6 +38,7 @@ class TravelCubit extends Cubit<TravelState> {
     _getTravelsUseCase = GetTravelsUseCase(_travelRepository);
     _userApp = Hive.box<UserApp>('user_data').values.first;
     _travels = Hive.box<Travel>('travels').values.toList();
+    await getTravels();
   }
 
   Future<void> getTravelData(Travel travel) async {

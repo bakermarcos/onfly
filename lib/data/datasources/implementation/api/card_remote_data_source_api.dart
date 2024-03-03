@@ -17,8 +17,7 @@ class RemoteCardDataSourceApi implements CardDataSourceApi {
 
     try {
       final cardDataSnapshot = await ref.get();
-      card =
-          CorporateCard.fromJson(jsonDecode(cardDataSnapshot.value as String));
+      card = CorporateCard.fromJson(jsonEncode(cardDataSnapshot.value));
       return card;
     } catch (e) {
       rethrow;
@@ -26,8 +25,8 @@ class RemoteCardDataSourceApi implements CardDataSourceApi {
   }
 
   @override
-  Future<int> updateBalance(
-      {required UserApp userApp, required int balance}) async {
+  Future<double> updateBalance(
+      {required UserApp userApp, required double balance}) async {
     final DatabaseReference ref =
         _firebaseDatabase.ref('${userApp.id}/card/balance');
 

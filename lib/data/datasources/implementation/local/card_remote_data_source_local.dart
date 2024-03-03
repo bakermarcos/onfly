@@ -13,9 +13,9 @@ class RemoteCardDataSourceLocal implements CardDataSourceLocal {
   }
 
   @override
-  Future<int> updateBalance(
+  Future<double> updateBalance(
       {required CorporateCard card,
-      required int balance,
+      required double balance,
       bool isSync = false}) async {
     CorporateCard? localCard = cardBox.get(card);
     if (localCard != null) {

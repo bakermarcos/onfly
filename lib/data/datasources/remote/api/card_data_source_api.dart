@@ -6,5 +6,5 @@ abstract class CardDataSourceApi {
     required UserApp userApp,
   });
 
-  Future<int> updateBalance({required UserApp userApp, required int balance});
+  Future<double> updateBalance({required UserApp userApp, required double balance});
 }

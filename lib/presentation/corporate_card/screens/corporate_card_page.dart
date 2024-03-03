@@ -12,7 +12,7 @@ class CorporateCardPage extends StatefulWidget {
 }
 
 class _CorporateCardPageState extends State<CorporateCardPage> {
-  late CorporateCardCubit cubit = CorporateCardCubit();
+  CorporateCardCubit cubit = CorporateCardCubit();
   @override
   void initState() {
     cubit.init();
@@ -33,13 +33,12 @@ class _CorporateCardPageState extends State<CorporateCardPage> {
           }
         },
         builder: (context, state) {
-          if (state is InitialCorporateCardState) {
-            cubit.init();
-          } else if (state is LoadingCorporateCardState) {
+          if (state is LoadingCorporateCardState) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is LoadedCorporateCardState) {
+          }
+          if (state is LoadedCorporateCardState) {
             return Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
@@ -48,21 +47,26 @@ class _CorporateCardPageState extends State<CorporateCardPage> {
                 children: [
                   const Text(
                     'Saldo',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                   ),
-                  Text('R\$ ${state.card.balance.toString()}'),
+                  Text(
+                    'R\$ ${state.card.balance.toString().replaceAll('.', ',')}',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   const Text(
                     'Extrato',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                   ),
                   Expanded(
-                      child: ListView.builder(itemBuilder: (context, index) {
-                    return ExpenseListTile(
-                      name: state.expenses[index].name,
-                      value: state.expenses[index].value.toString(),
-                      date: state.expenses[index].date,
-                    );
-                  })),
+                      child: ListView.builder(
+                          itemCount: state.expenses.length,
+                          itemBuilder: (context, index) {
+                            return ExpenseListTile(
+                                expense: state.expenses[index]);
+                          })),
                 ],
               ),
             );

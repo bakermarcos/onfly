@@ -38,17 +38,20 @@ class _TravelsPageState extends State<TravelsPage> {
               child: CircularProgressIndicator(),
             );
           }
-          return ListView.builder(
-            itemCount: cubit.travels.length,
-            itemBuilder: (context, index) {
-              return TravelListTile(
-                boardingPass: cubit.travels[index].boardingPass,
-                airline: cubit.travels[index].airline,
-                airport: cubit.travels[index].airport,
-                dateTime: cubit.travels[index].date,
-              );
-            },
-          );
+          if (state is TravelLoadedState) {
+            return ListView.builder(
+              itemCount: cubit.travels.length,
+              itemBuilder: (context, index) {
+                return TravelListTile(
+                  boardingPass: cubit.travels[index].boardingPass,
+                  airline: cubit.travels[index].airline,
+                  airport: cubit.travels[index].airport,
+                  dateTime: cubit.travels[index].date,
+                );
+              },
+            );
+          }
+          return Center(child: const Text('Ops, não há nada por aqui ainda.'));
         },
       ),
     );

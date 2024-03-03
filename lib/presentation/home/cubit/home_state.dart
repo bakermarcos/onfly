@@ -7,6 +7,8 @@ final class HomeInitialState extends HomeState {}
 
 final class HomeLoadingState extends HomeState {}
 
+final class HomePopBottomSheetState extends HomeState {}
+
 final class HomeLoadedState extends HomeState {
   final List<Expense> expenses;
   HomeLoadedState(this.expenses);

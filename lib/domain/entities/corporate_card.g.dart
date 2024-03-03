@@ -19,8 +19,8 @@ class CorporateCardAdapter extends TypeAdapter<CorporateCard> {
     return CorporateCard(
       id: fields[0] as int,
       cardNumber: fields[1] as int,
-      balance: fields[2] as int,
-      expenses: (fields[3] as List).cast<Expense>(),
+      balance: fields[2] as double,
+      initialBalance: fields[3] as double,
     );
   }
 
@@ -35,7 +35,7 @@ class CorporateCardAdapter extends TypeAdapter<CorporateCard> {
       ..writeByte(2)
       ..write(obj.balance)
       ..writeByte(3)
-      ..write(obj.expenses);
+      ..write(obj.initialBalance);
   }
 
   @override

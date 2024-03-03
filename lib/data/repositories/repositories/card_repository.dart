@@ -5,8 +5,8 @@ abstract class CardRepository {
   Future<CorporateCard> getCardData(
       {required UserApp userApp, required CorporateCard card});
 
-  Future<int> updateBalance(
+  Future<double> updateBalance(
       {required UserApp userApp,
-      required int balance,
+      required double balance,
       required CorporateCard card});
 }

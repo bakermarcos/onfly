@@ -23,11 +23,11 @@ class CardRepositoryImp implements CardRepository {
   }
 
   @override
-  Future<int> updateBalance(
+  Future<double> updateBalance(
       {required UserApp userApp,
-      required int balance,
+      required double balance,
       required CorporateCard card}) async {
-    int response;
+    double response;
     try {
       response = await cardDataSourceApi.updateBalance(
           userApp: userApp, balance: balance);

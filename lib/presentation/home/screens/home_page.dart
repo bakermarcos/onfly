@@ -23,19 +23,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeCubit, HomeState>(
-      bloc: cubit,
-      listener: (context, state) {
-        if (state is HomeErrorState) {
-          Fluttertoast.showToast(msg: state.message);
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Bem vindo, Usuário'),
-          ),
-          body: Padding(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Bem vindo, Usuário'),
+      ),
+      body: BlocConsumer<HomeCubit, HomeState>(
+        bloc: cubit,
+        listener: (context, state) {
+          if (state is HomeErrorState) {
+            Fluttertoast.showToast(msg: state.message);
+          }
+          if (state is HomePopBottomSheetState) {
+            Navigator.of(context).pop();
+          }
+        },
+        builder: (context, state) {
+          return Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
@@ -93,17 +96,39 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     TextFormField(
                                       controller: cubit.nameController,
+                                      decoration: const InputDecoration(
+                                        labelStyle:
+                                            TextStyle(color: Colors.grey),
+                                        labelText: 'Descrição despesa',
+                                      ),
                                     ),
                                     TextFormField(
                                       controller: cubit.dateController,
+                                      decoration: const InputDecoration(
+                                        labelStyle:
+                                            TextStyle(color: Colors.grey),
+                                        labelText: 'Data',
+                                      ),
                                     ),
                                     TextFormField(
                                       controller: cubit.valueController,
+                                      decoration: const InputDecoration(
+                                        labelStyle:
+                                            TextStyle(color: Colors.grey),
+                                        labelText: 'Valor',
+                                      ),
+                                    ),
+                                    TextFormField(
+                                      controller: cubit.categoryController,
+                                      decoration: const InputDecoration(
+                                        labelStyle:
+                                            TextStyle(color: Colors.grey),
+                                        labelText: 'Categoria',
+                                      ),
                                     ),
                                     ElevatedButton(
-                                        onPressed: () async {
+                                        onPressed: () {
                                           cubit.addExpense();
-                                          await cubit.updateExpenses();
                                         },
                                         child: const Text('Adicionar')),
                                   ],
@@ -118,29 +143,32 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                state is HomeLoadedState
-                    ? Expanded(
-                        child: ListView.builder(
-                          itemBuilder: (context, index) {
-                            return ExpenseListTile(
-                              name: state.expenses[index].name,
-                              value: state.expenses[index].value,
-                              date: state.expenses[index].date,
-                            );
-                          },
-                          shrinkWrap: true,
-                        ),
-                      )
-                    : state is HomeLoadingState
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : const Center(child: Text('Ops, não há nada aqui')),
+                if (state is HomeLoadedState)
+                  state.expenses.isEmpty
+                      ? const Center(
+                          child: Text('Ainda não há nada por aqui'),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount: state.expenses.length,
+                            itemBuilder: (context, index) {
+                              return ExpenseListTile(
+                                  expense: state.expenses[index]);
+                            },
+                            shrinkWrap: true,
+                          ),
+                        )
+                else
+                  state is HomeLoadingState
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : const Center(child: Text('Ops, não há nada aqui')),
               ],
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

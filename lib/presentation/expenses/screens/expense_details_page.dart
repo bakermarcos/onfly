@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:onfly/domain/entities/expense.dart';
 import 'package:onfly/presentation/expenses/cubit/expense_cubit.dart';
 
 class ExpenseDetailsPage extends StatefulWidget {
-  const ExpenseDetailsPage({super.key});
+  const ExpenseDetailsPage({super.key, required this.expense});
+  final Expense expense;
 
   @override
   State<ExpenseDetailsPage> createState() => _ExpenseDetailsPageState();
@@ -14,7 +16,7 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
   late ExpenseCubit cubit = ExpenseCubit();
   @override
   void initState() {
-    cubit.init();
+    cubit.init(widget.expense);
     cubit.nameController.text = cubit.expense.name;
     cubit.dateController.text = cubit.expense.date;
     cubit.valueController.text = 'R\$ ${cubit.expense.value}';
@@ -50,6 +52,9 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
                             TextFormField(
                               controller: cubit.valueController,
                             ),
+                            TextFormField(
+                              controller: cubit.categoryController,
+                            ),
                             ElevatedButton(
                                 onPressed: () async {
                                   await cubit.editExpense();
@@ -60,7 +65,7 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
                           ]
                         : [
                             Text(
-                              cubit.nameController.text,
+                              cubit.expense.name,
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
@@ -69,7 +74,7 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
                               height: 10,
                             ),
                             Text(
-                              cubit.dateController.text,
+                              cubit.expense.date,
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
@@ -78,7 +83,13 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
                               height: 10,
                             ),
                             Text(
-                              cubit.valueController.text,
+                              cubit.expense.value,
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              cubit.expense.category,
                               style: const TextStyle(
                                 fontSize: 18,
                               ),

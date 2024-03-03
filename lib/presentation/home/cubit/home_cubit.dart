@@ -26,11 +26,12 @@ class HomeCubit extends Cubit<HomeState> {
   late final GetExpensesUseCase _getExpensesUseCase;
   late UserApp _userApp;
   UserApp get userApp => _userApp;
-  late List<Expense> _expenses;
+  List<Expense> _expenses = [];
   List<Expense> get expenses => _expenses;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController valueController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
   HomeCubit() : super(HomeInitialState());
 
   void init() async {
@@ -43,13 +44,25 @@ class HomeCubit extends Cubit<HomeState> {
     _expenses = Hive.box<Expense>('expenses').values.toList();
   }
 
-  void addExpense() {
+  bool _checkExpenseExist(Expense expense) {
+    return _expenses.contains(expense);
+  }
+
+  Future<void> addExpense() async {
     final newExpense = Expense(
         id: _expenses.length,
         name: nameController.text,
         date: dateController.text,
-        value: valueController.text);
-    _expenses.add(newExpense);
+        value: valueController.text,
+        category: categoryController.text);
+    if (!_checkExpenseExist(newExpense)) {
+      _expenses.add(newExpense);
+      await updateExpenses();
+      emit(HomePopBottomSheetState());
+      emit(HomeLoadedState(expenses));
+    } else {
+      emit(HomeErrorState('Essa despesa já foi adicionada'));
+    }
   }
 
   Future<void> updateExpenses() async {

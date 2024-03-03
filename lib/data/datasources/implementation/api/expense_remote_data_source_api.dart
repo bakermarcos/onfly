@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:onfly/data/datasources/remote/api/expense_data_source_api.dart';
 import 'package:onfly/domain/entities/expense.dart';
@@ -29,8 +30,7 @@ class RemoteExpenseDataSourceApi implements ExpenseDataSourceApi {
 
     try {
       final expenseDataSnapshot = await ref.get();
-      expense =
-          Expense.fromJson(jsonDecode(expenseDataSnapshot.value as String));
+      expense = Expense.fromJson(expenseDataSnapshot.value as String);
       return expense;
     } catch (e) {
       rethrow;
@@ -45,8 +45,10 @@ class RemoteExpenseDataSourceApi implements ExpenseDataSourceApi {
 
     try {
       final expensesSnapshot = await ref.get();
-      for (var expense in expensesSnapshot.value as List) {
-        expenses.add(Expense.fromJson(jsonDecode(expense)));
+      final auxList = (expensesSnapshot.value as List);
+
+      for (var expense in auxList) {
+        expenses.add(Expense.fromJson((jsonEncode(expense))));
       }
       return expenses;
     } catch (e) {
@@ -61,9 +63,15 @@ class RemoteExpenseDataSourceApi implements ExpenseDataSourceApi {
         _firebaseDatabase.ref('${userApp.id}/expenses');
     try {
       final expensesSnapshot = await ref.get();
-      if (expenses == expensesSnapshot.value as List ||
-          expenses.length > (expensesSnapshot.value as List).length) {
-        await ref.set(expenses);
+      final auxList = (expensesSnapshot.value as List);
+
+      if (expenses == auxList || expenses.length > auxList.length) {
+        List auxList = [];
+        for (var element in expenses) {
+          auxList.add(element.toMap());
+        }
+        Map auxMap = auxList.asMap();
+        await ref.set(auxMap);
       } else {
         expenses = await getExpenses(userApp: userApp);
       }

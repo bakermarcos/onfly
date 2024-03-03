@@ -32,7 +32,7 @@ class RemoteTravelDataSourceApi implements TravelDataSourceApi {
     try {
       final travelsSnapshot = await ref.get();
       for (var travel in travelsSnapshot.value as List) {
-        travels.add(Travel.fromJson(jsonDecode(travel)));
+        travels.add(Travel.fromJson(jsonEncode(travel)));
       }
       return travels;
     } catch (e) {

@@ -2,10 +2,11 @@
 import 'dart:convert';
 import 'package:hive_flutter/hive_flutter.dart';
 part 'travel.g.dart';
+
 @HiveType(typeId: 1)
 class Travel {
   @HiveField(0)
-  final int id;
+  int id;
   @HiveField(1)
   final String airport;
   @HiveField(2)

@@ -35,9 +35,10 @@ class ExpenseCubit extends Cubit<ExpenseState> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController valueController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
   ExpenseCubit() : super(ExpenseInitialState());
 
-  void init() async {
+  void init(Expense expense) async {
     _expenseRepository =
         ExpenseRepositoryImp(_expenseDataSourceApi, _expenseDataSourceLocal);
     _getExpenseDataUseCase = GetExpenseDataUseCase(_expenseRepository);
@@ -45,7 +46,7 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     _editExpenseUseCase = EditExpenseUseCase(_expenseRepository);
     // _getExpensesUseCase = GetExpensesUseCase(_expenseRepository);
     _userApp = Hive.box<UserApp>('user_data').values.first;
-    _expense = Hive.box<Expense>('expenses').get(expense) ?? Expense.empty();
+    _expense = Hive.box<Expense>('expenses').get(expense) ?? expense;
   }
 
   Future<void> getExpenseData(Expense expense) async {
@@ -88,7 +89,8 @@ class ExpenseCubit extends Cubit<ExpenseState> {
         id: _expense.id,
         name: nameController.text,
         date: dateController.text,
-        value: valueController.text);
+        value: valueController.text,
+        category: categoryController.text);
     try {
       await _editExpenseUseCase.call(userApp: _userApp, expense: expenseEdited);
     } catch (e) {

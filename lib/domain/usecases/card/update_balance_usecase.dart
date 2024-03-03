@@ -5,9 +5,9 @@ import 'package:onfly/domain/entities/user_app.dart';
 class UpdateBalanceUseCase {
   final CardRepository cardRepository;
   UpdateBalanceUseCase(this.cardRepository);
-  Future<int> call(
+  Future<double> call(
       {required UserApp userApp,
-      required int balance,
+      required double balance,
       required CorporateCard card}) async {
     return await cardRepository.updateBalance(
         userApp: userApp, balance: balance, card: card);

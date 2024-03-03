@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
 import 'package:hive_flutter/hive_flutter.dart';
+
 part 'expense.g.dart';
+
 @HiveType(typeId: 2)
 class Expense {
   @HiveField(0)
@@ -12,11 +15,14 @@ class Expense {
   final String value;
   @HiveField(3)
   final String date;
+  @HiveField(4)
+  final String category;
   Expense({
     required this.id,
     required this.name,
     required this.value,
     required this.date,
+    required this.category,
   });
 
   static Expense empty() {
@@ -24,7 +30,8 @@ class Expense {
       id: 0,
       name: 'name',
       value: '0',
-      date: '10/01/2024',
+      date: '10/02/2024',
+      category: 'category',
     );
   }
 
@@ -33,12 +40,14 @@ class Expense {
     String? name,
     String? value,
     String? date,
+    String? category,
   }) {
     return Expense(
       id: id ?? this.id,
       name: name ?? this.name,
       value: value ?? this.value,
       date: date ?? this.date,
+      category: category ?? this.category,
     );
   }
 
@@ -48,6 +57,7 @@ class Expense {
       'name': name,
       'value': value,
       'date': date,
+      'category': category,
     };
   }
 
@@ -57,6 +67,7 @@ class Expense {
       name: map['name'] as String,
       value: map['value'] as String,
       date: map['date'] as String,
+      category: map['category'] as String,
     );
   }
 
@@ -67,7 +78,7 @@ class Expense {
 
   @override
   String toString() {
-    return 'Expense(id: $id, name: $name, value: $value, date: $date)';
+    return 'Expense(id: $id, name: $name, value: $value, date: $date, category: $category)';
   }
 
   @override
@@ -77,11 +88,16 @@ class Expense {
     return other.id == id &&
         other.name == name &&
         other.value == value &&
-        other.date == date;
+        other.date == date &&
+        other.category == category;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ name.hashCode ^ value.hashCode ^ date.hashCode;
+    return id.hashCode ^
+        name.hashCode ^
+        value.hashCode ^
+        date.hashCode ^
+        category.hashCode;
   }
 }

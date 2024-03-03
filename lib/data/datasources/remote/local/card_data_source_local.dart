@@ -9,6 +9,6 @@ abstract class CardDataSourceLocal {
     required CorporateCard card,
   });
 
-  Future<int> updateBalance(
-      {required CorporateCard card, required int balance, bool isSync = false});
+  Future<double> updateBalance(
+      {required CorporateCard card, required double balance, bool isSync = false});
 }

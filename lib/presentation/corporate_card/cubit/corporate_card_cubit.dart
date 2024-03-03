@@ -37,12 +37,24 @@ class CorporateCardCubit extends Cubit<CorporateCardState> {
     _getCardDataUseCase = GetCardDataUseCase(_cardRepository);
     _updateBalanceUseCase = UpdateBalanceUseCase(_cardRepository);
     _userApp = Hive.box<UserApp>('user_data').values.first;
-    _card = Hive.box<CorporateCard>('card_data').values.first;
+    _card = Hive.box<CorporateCard>('card_data').values.isNotEmpty
+        ? Hive.box<CorporateCard>('card_data').values.first
+        : CorporateCard.empty();
     _expenses = Hive.box<Expense>('expenses').values.toList();
+    await getCardData().then((value) async => await updateBalance());
+  }
+
+  void calculateNewBalance() {
+    double outcomes = 0;
+    for (var expense in expenses) {
+      outcomes += double.tryParse(expense.value.replaceAll(',', '.')) ?? 0;
+    }
+    _card.balance = _card.initialBalance - outcomes;
   }
 
   Future<void> updateBalance() async {
     emit(LoadingCorporateCardState());
+    calculateNewBalance();
     try {
       await _updateBalanceUseCase.call(
           userApp: _userApp, balance: _card.balance, card: _card);

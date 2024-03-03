@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:onfly/domain/entities/expense.dart';
 part 'corporate_card.g.dart';
 
 @HiveType(typeId: 3)
@@ -12,28 +10,26 @@ class CorporateCard {
   @HiveField(1)
   int cardNumber;
   @HiveField(2)
-  int balance;
+  double balance;
   @HiveField(3)
-  List<Expense> expenses;
+  double initialBalance;
 
-  CorporateCard({
-    required this.id,
-    required this.cardNumber,
-    required this.balance,
-    required this.expenses,
-  });
+  CorporateCard(
+      {required this.id,
+      required this.cardNumber,
+      required this.balance,
+      required this.initialBalance});
 
-  CorporateCard copyWith({
-    int? id,
-    int? cardNumber,
-    int? balance,
-    List<Expense>? expenses,
-  }) {
+  CorporateCard copyWith(
+      {int? id,
+      int? cardNumber,
+      double? balance,
+      double? initialBalance}) {
     return CorporateCard(
       id: id ?? this.id,
       cardNumber: cardNumber ?? this.cardNumber,
       balance: balance ?? this.balance,
-      expenses: expenses ?? this.expenses,
+      initialBalance: initialBalance ?? this.initialBalance,
     );
   }
 
@@ -42,7 +38,7 @@ class CorporateCard {
       'id': id,
       'cardNumber': cardNumber,
       'balance': balance,
-      'expenses': expenses.map((x) => x.toMap()).toList(),
+      'initialBalance': initialBalance,
     };
   }
 
@@ -50,12 +46,8 @@ class CorporateCard {
     return CorporateCard(
       id: map['id'] as int,
       cardNumber: map['cardNumber'] as int,
-      balance: map['balance'] as int,
-      expenses: List<Expense>.from(
-        (map['expenses'] as List<int>).map<Expense>(
-          (x) => Expense.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      balance: double.parse(map['balance'].toString()),
+      initialBalance: double.parse(map['initialBalance'].toString()),
     );
   }
 
@@ -69,13 +61,13 @@ class CorporateCard {
       id: 0,
       cardNumber: 0,
       balance: 2000,
-      expenses: [],
+      initialBalance: 2000,
     );
   }
 
   @override
   String toString() {
-    return 'CorporateCard(id: $id, cardNumber: $cardNumber, balance: $balance, expenses: $expenses)';
+    return 'CorporateCard(id: $id, cardNumber: $cardNumber, balance: $balance, initialBalance $initialBalance)';
   }
 
   @override
@@ -85,7 +77,7 @@ class CorporateCard {
     return other.id == id &&
         other.cardNumber == cardNumber &&
         other.balance == balance &&
-        listEquals(other.expenses, expenses);
+        other.initialBalance == initialBalance;
   }
 
   @override
@@ -93,6 +85,6 @@ class CorporateCard {
     return id.hashCode ^
         cardNumber.hashCode ^
         balance.hashCode ^
-        expenses.hashCode;
+        initialBalance.hashCode;
   }
 }
