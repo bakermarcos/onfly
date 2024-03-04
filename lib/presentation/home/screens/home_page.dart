@@ -209,7 +209,7 @@ class _HomePageState extends State<HomePage> {
                       ? const Center(
                           child: Text('Ainda não há nada por aqui'),
                         )
-                      : Expanded(
+                      : Flexible(
                           child: ListView.builder(
                             reverse: true,
                             itemCount: state.expenses.length,

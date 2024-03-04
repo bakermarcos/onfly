@@ -80,7 +80,7 @@ class _CorporateCardPageState extends State<CorporateCardPage> {
                     'Extrato',
                     style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                   ),
-                  Expanded(
+                  Flexible(
                       child: ListView.builder(
                           reverse: true,
                           shrinkWrap: true,

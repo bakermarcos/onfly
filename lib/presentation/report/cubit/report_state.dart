@@ -6,10 +6,5 @@ sealed class ReportState {}
 final class ReportInitialState extends ReportState {}
 
 final class ReportLoadingState extends ReportState {}
-
-final class ReportErrorState extends ReportState {
-  final String message;
-  ReportErrorState(this.message);
-}
-
-final class ReportLoadedState extends ReportState {}
+final class ReportPerCategoryState extends ReportState {}
+final class ReportPerDateTimeState extends ReportState {}
