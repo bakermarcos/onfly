@@ -21,13 +21,14 @@ class CorporateCardAdapter extends TypeAdapter<CorporateCard> {
       cardNumber: fields[1] as int,
       balance: fields[2] as double,
       initialBalance: fields[3] as double,
+      cardFlag: fields[4] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, CorporateCard obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class CorporateCardAdapter extends TypeAdapter<CorporateCard> {
       ..writeByte(2)
       ..write(obj.balance)
       ..writeByte(3)
-      ..write(obj.initialBalance);
+      ..write(obj.initialBalance)
+      ..writeByte(4)
+      ..write(obj.cardFlag);
   }
 
   @override

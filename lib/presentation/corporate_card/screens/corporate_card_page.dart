@@ -42,20 +42,36 @@ class _CorporateCardPageState extends State<CorporateCardPage> {
             return Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        state.card.cardFlag,
+                        style: const TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        '**** ${state.card.cardNumber.toString().substring(12)}',
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   const Text(
                     'Saldo',
-                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     'R\$ ${cubit.balanceFormatted()}',
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                  Text(
-                    '**** ${state.card.cardNumber.toString().substring(12)}',
-                    style: const TextStyle(fontSize: 15),
+                    style: const TextStyle(fontSize: 18),
                   ),
                   const SizedBox(
                     height: 10,
