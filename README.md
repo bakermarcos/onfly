@@ -32,12 +32,31 @@ Forneça documentação sobre as escolhas de design, arquitetura.
             Camada com as regras de negócio
         - Presentation
             Camada de view e gerência de estado das páginas
+                - Cubit
+                - Screens
 - Gerência de estado utilizando Cubit
 - Utilização do Hive para banco de dados local
     -- Banco de dados local separados por feature para melhor gerência dos dados
 - Firebase como 'backend' da aplicação
     -- Banco de dados (Realtime Database)
     -- Login e registro (Firebase Auth)
+
+# Offline first
+- Conceito: 
+    -- O aplicativo funciona sem necessidade de conexão à internet, porém quando existe conexão há a sincronização dos dados através do envio dos dados alterados offline
+
+- Implementação no projeto:
+    -- Na alteração de cada dado offline as chamadas para API serão feitas para atualização online, caso não esteja conectado ou há algum problema na chamada os dados alterados são salvos apenas no banco de dados local.
+    -- Caso haja problema de sincronia os dados alterados são salvos no banco de dados local que o aplicativo utiliza nas telas e no banco de sincronização, uma 'box' do Hive separada.
+    -- Na tela Home há um botão de sincronização de dados que verifica se há dados no banco de sincronização e, se houver dados para sincronizar, tenta sincronizar os dados chamando novamente a API para update.
+
+- Casos especiais
+    -- Como o login é feito através do Firebase não foi feito implementação de login Offline
+    -- Caso o usuário tente fazer logout e ainda existir updates pendentes o aplicativo não irá realizar o logout avisando que há pendências.
+
+# Testes
+- Teste de integração da tela de login para demonstração
+- Testes unitários utilizando Mock para criação de dados fictícios adequados para teste
 
 ## Getting Started
 
