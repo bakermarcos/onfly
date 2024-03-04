@@ -3,9 +3,9 @@ import 'package:onfly/data/datasources/remote/local/card_data_source_local.dart'
 import 'package:onfly/domain/entities/corporate_card.dart';
 
 class RemoteCardDataSourceLocal implements CardDataSourceLocal {
-  final Box<CorporateCard> cardBox = Hive.box<CorporateCard>('card_data');
-  final Box<CorporateCard> syncCardBox =
-      Hive.box<CorporateCard>('sync_card_data');
+  RemoteCardDataSourceLocal(this.cardBox, this.syncCardBox);
+  final Box<CorporateCard> cardBox; 
+  final Box<CorporateCard> syncCardBox;
   @override
   Future<CorporateCard> getCardData({required CorporateCard card}) async {
     await cardBox.add(card);

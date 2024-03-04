@@ -60,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 TextFormField(
+                  key: const Key('email_form_field'),
                   decoration: const InputDecoration(
                     labelStyle: TextStyle(color: Colors.grey),
                     labelText: 'E-mail',
@@ -67,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: cubit.loginController,
                 ),
                 TextFormField(
+                  key: const Key('password_form_field'),
                   obscureText: cubit.obscureText,
                   decoration: InputDecoration(
                     labelStyle: const TextStyle(color: Colors.grey),

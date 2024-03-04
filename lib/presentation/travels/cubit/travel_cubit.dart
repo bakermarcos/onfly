@@ -18,8 +18,7 @@ part 'travel_state.dart';
 class TravelCubit extends Cubit<TravelState> {
   final TravelDataSourceApi _travelDataSourceApi =
       RemoteTravelDataSourceApi(FirebaseDatabase.instance);
-  final TravelDataSourceLocal _travelDataSourceLocal =
-      RemoteTravelDataSourceLocal();
+  late final TravelDataSourceLocal _travelDataSourceLocal;
   late final TravelRepository _travelRepository;
   late final GetTravelDataUseCase _getTravelDataUseCase;
   late final GetTravelsUseCase _getTravelsUseCase;
@@ -32,6 +31,8 @@ class TravelCubit extends Cubit<TravelState> {
   TravelCubit() : super(TravelInitialState());
 
   void init() async {
+    _travelDataSourceLocal = RemoteTravelDataSourceLocal(
+        Hive.box<Travel>('travels'), Hive.box<Travel>('sync_travels'));
     _travelRepository =
         TravelRepositoryImp(_travelDataSourceApi, _travelDataSourceLocal);
     _getTravelDataUseCase = GetTravelDataUseCase(_travelRepository);

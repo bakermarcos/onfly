@@ -3,8 +3,9 @@ import 'package:onfly/data/datasources/remote/local/travel_data_source_local.dar
 import 'package:onfly/domain/entities/travel.dart';
 
 class RemoteTravelDataSourceLocal extends TravelDataSourceLocal {
-  final Box<Travel> travelBox = Hive.box<Travel>('travels');
-  final Box<Travel> syncTravelBox = Hive.box<Travel>('sync_travels');
+  RemoteTravelDataSourceLocal(this.travelBox, this.syncTravelBox);
+  final Box<Travel> travelBox;
+  final Box<Travel> syncTravelBox;
   @override
   Future<Travel> getTravelData({required Travel travel}) async {
     return travelBox.get(travel) ?? travel;

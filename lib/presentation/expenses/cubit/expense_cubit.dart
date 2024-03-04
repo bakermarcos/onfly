@@ -23,8 +23,7 @@ part 'expense_state.dart';
 class ExpenseCubit extends Cubit<ExpenseState> {
   final ExpenseDataSourceApi _expenseDataSourceApi =
       RemoteExpenseDataSourceApi(FirebaseDatabase.instance);
-  final ExpenseDataSourceLocal _expenseDataSourceLocal =
-      RemoteExpenseDataSourceLocal();
+  late final ExpenseDataSourceLocal _expenseDataSourceLocal;
   late final ExpenseRepository _expenseRepository;
   late final GetExpenseDataUseCase _getExpenseDataUseCase;
   late final UpdateExpensesUseCase _updateExpensesUseCase;
@@ -43,6 +42,8 @@ class ExpenseCubit extends Cubit<ExpenseState> {
   ExpenseCubit() : super(ExpenseInitialState());
 
   void init(Expense expense) async {
+    _expenseDataSourceLocal = RemoteExpenseDataSourceLocal(
+        Hive.box<Expense>('expenses'), Hive.box<Expense>('sync_expenses'));
     _expenseRepository =
         ExpenseRepositoryImp(_expenseDataSourceApi, _expenseDataSourceLocal);
     _getExpenseDataUseCase = GetExpenseDataUseCase(_expenseRepository);

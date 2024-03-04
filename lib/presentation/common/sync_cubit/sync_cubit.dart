@@ -26,14 +26,13 @@ part 'sync_state.dart';
 class SyncCubit extends Cubit<SyncState> {
   final CardDataSourceApi _cardDataSourceApi =
       RemoteCardDataSourceApi(FirebaseDatabase.instance);
-  final CardDataSourceLocal _cardDataSourceLocal = RemoteCardDataSourceLocal();
+  late final CardDataSourceLocal _cardDataSourceLocal;
   late final CardRepository _cardRepository;
   late final UpdateBalanceUseCase _updateBalanceUseCase;
 
   final ExpenseDataSourceApi _expenseDataSourceApi =
       RemoteExpenseDataSourceApi(FirebaseDatabase.instance);
-  final ExpenseDataSourceLocal _expenseDataSourceLocal =
-      RemoteExpenseDataSourceLocal();
+  late final ExpenseDataSourceLocal _expenseDataSourceLocal;
   late final ExpenseRepository _expenseRepository;
   late final UpdateExpensesUseCase _updateExpensesUseCase;
 
@@ -50,6 +49,12 @@ class SyncCubit extends Cubit<SyncState> {
   SyncCubit() : super(SyncInitialState());
 
   Future<void> init() async {
+    _expenseDataSourceLocal = RemoteExpenseDataSourceLocal(
+        Hive.box<Expense>('expenses'), Hive.box<Expense>('sync_expenses'));
+    _cardDataSourceLocal = RemoteCardDataSourceLocal(
+        Hive.box<CorporateCard>('card_data'),
+        Hive.box<CorporateCard>('sync_card_data'));
+        
     _cardRepository =
         CardRepositoryImp(_cardDataSourceApi, _cardDataSourceLocal);
     _updateBalanceUseCase = UpdateBalanceUseCase(_cardRepository);
@@ -111,7 +116,8 @@ class SyncCubit extends Cubit<SyncState> {
   }
 
   Future<bool> checkPendingUpdates() async {
-    hasPendingExpensesUpdates = Hive.box<Expense>('sync_expenses').values.isNotEmpty;
+    hasPendingExpensesUpdates =
+        Hive.box<Expense>('sync_expenses').values.isNotEmpty;
     hasPendingCardUpdates =
         Hive.box<CorporateCard>('sync_card_data').values.isNotEmpty;
     return hasPendingExpensesUpdates || hasPendingCardUpdates;

@@ -20,8 +20,7 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final ExpenseDataSourceApi _expenseDataSourceApi =
       RemoteExpenseDataSourceApi(FirebaseDatabase.instance);
-  final ExpenseDataSourceLocal _expenseDataSourceLocal =
-      RemoteExpenseDataSourceLocal();
+  late final ExpenseDataSourceLocal _expenseDataSourceLocal;
   late final ExpenseRepository _expenseRepository;
   late final UpdateExpensesUseCase _updateExpensesUseCase;
   late final GetExpensesUseCase _getExpensesUseCase;
@@ -37,6 +36,8 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitialState());
 
   void init() async {
+    _expenseDataSourceLocal = RemoteExpenseDataSourceLocal(
+        Hive.box<Expense>('expenses'), Hive.box<Expense>('sync_expenses'));
     _expenseRepository =
         ExpenseRepositoryImp(_expenseDataSourceApi, _expenseDataSourceLocal);
     _updateExpensesUseCase = UpdateExpensesUseCase(_expenseRepository);

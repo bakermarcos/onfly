@@ -3,8 +3,10 @@ import 'package:onfly/data/datasources/remote/local/expense_data_source_local.da
 import 'package:onfly/domain/entities/expense.dart';
 
 class RemoteExpenseDataSourceLocal implements ExpenseDataSourceLocal {
-  final Box<Expense> expenseBox = Hive.box<Expense>('expenses');
-  final Box<Expense> syncExpenseBox = Hive.box<Expense>('sync_expenses');
+  RemoteExpenseDataSourceLocal(this.expenseBox, this.syncExpenseBox);
+  late final Box<Expense> expenseBox;
+  late final Box<Expense> syncExpenseBox;
+
   @override
   Future<Expense> editExpense(
       {required Expense expense, bool isSync = false}) async {

@@ -19,7 +19,7 @@ part 'corporate_card_state.dart';
 class CorporateCardCubit extends Cubit<CorporateCardState> {
   final CardDataSourceApi _cardDataSourceApi =
       RemoteCardDataSourceApi(FirebaseDatabase.instance);
-  final CardDataSourceLocal _cardDataSourceLocal = RemoteCardDataSourceLocal();
+  late final CardDataSourceLocal _cardDataSourceLocal;
   late final CardRepository _cardRepository;
   late final GetCardDataUseCase _getCardDataUseCase;
   late final UpdateBalanceUseCase _updateBalanceUseCase;
@@ -32,6 +32,9 @@ class CorporateCardCubit extends Cubit<CorporateCardState> {
   CorporateCardCubit() : super(InitialCorporateCardState());
 
   void init() async {
+    _cardDataSourceLocal = RemoteCardDataSourceLocal(
+        Hive.box<CorporateCard>('card_data'),
+        Hive.box<CorporateCard>('sync_card_data'));
     _cardRepository =
         CardRepositoryImp(_cardDataSourceApi, _cardDataSourceLocal);
     _getCardDataUseCase = GetCardDataUseCase(_cardRepository);
