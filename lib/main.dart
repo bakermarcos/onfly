@@ -10,16 +10,16 @@ import 'package:onfly/domain/entities/user_app.dart';
 import 'package:onfly/firebase_options.dart';
 import 'package:onfly/presentation/login/screens/login_page.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await initHive().then((value) async => await openBoxes());
+  await _initHive().then((value) async => await _openBoxes());
   runApp(const MyApp());
 }
 
-Future<void> initHive() async {
+Future<void> _initHive() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CorporateCardAdapter());
   Hive.registerAdapter(ExpenseAdapter());
@@ -27,7 +27,7 @@ Future<void> initHive() async {
   Hive.registerAdapter(UserAppAdapter());
 }
 
-Future<void> openBoxes() async {
+Future<void> _openBoxes() async {
   await Hive.openBox<UserApp>('user_data');
   await Hive.openBox<Expense>('expenses');
   await Hive.openBox<Travel>('travels');
