@@ -15,7 +15,7 @@ class RemoteExpenseDataSourceApi implements ExpenseDataSourceApi {
         _firebaseDatabase.ref('${userApp.id}/expenses/${expense.id}');
 
     try {
-      await ref.set(expense).timeout(const Duration(seconds: 5));
+      await ref.set(expense.toMap()).timeout(const Duration(seconds: 5));
       return expense;
     } catch (e) {
       rethrow;

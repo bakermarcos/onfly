@@ -73,4 +73,8 @@ class CorporateCardCubit extends Cubit<CorporateCardState> {
     }
     emit(LoadedCorporateCardState(card, _expenses));
   }
+
+  String balanceFormatted() {
+    return _card.balance.toStringAsFixed(2).replaceAll('.', ',');
+  }
 }

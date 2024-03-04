@@ -20,6 +20,7 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
     cubit.nameController.text = cubit.expense.name;
     cubit.dateController.text = cubit.expense.date;
     cubit.valueController.text = 'R\$ ${cubit.expense.value}';
+    cubit.categoryController.text = cubit.expense.category;
     super.initState();
   }
 

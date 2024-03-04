@@ -50,7 +50,7 @@ class _CorporateCardPageState extends State<CorporateCardPage> {
                     style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'R\$ ${state.card.balance.toString().replaceAll('.', ',')}',
+                    'R\$ ${cubit.balanceFormatted()}',
                     style: const TextStyle(fontSize: 15),
                   ),
                   Text(
