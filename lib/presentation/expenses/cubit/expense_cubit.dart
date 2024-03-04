@@ -13,6 +13,8 @@ import 'package:onfly/domain/entities/expense.dart';
 import 'package:onfly/domain/entities/user_app.dart';
 import 'package:onfly/domain/usecases/expense/edit_expense_usecase.dart';
 import 'package:onfly/domain/usecases/expense/get_expense_data_usecase.dart';
+import 'package:onfly/domain/usecases/expense/get_expenses_usecase.dart';
+import 'package:onfly/domain/usecases/expense/update_expenses_usecase.dart';
 // import 'package:onfly/domain/usecases/expense/get_expenses_usecase.dart';
 // import 'package:onfly/domain/usecases/expense/update_expenses_usecase.dart';
 
@@ -25,13 +27,15 @@ class ExpenseCubit extends Cubit<ExpenseState> {
       RemoteExpenseDataSourceLocal();
   late final ExpenseRepository _expenseRepository;
   late final GetExpenseDataUseCase _getExpenseDataUseCase;
-  // late final UpdateExpensesUseCase _updateExpensesUseCase;
+  late final UpdateExpensesUseCase _updateExpensesUseCase;
   late final EditExpenseUseCase _editExpenseUseCase;
-  // late final GetExpensesUseCase _getExpensesUseCase;
+  late final GetExpensesUseCase _getExpensesUseCase;
   late UserApp _userApp;
   UserApp get userApp => _userApp;
   late Expense _expense;
   Expense get expense => _expense;
+  late List<Expense> _expenses;
+  List<Expense> get expenses => _expenses;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController valueController = TextEditingController();
@@ -42,11 +46,16 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     _expenseRepository =
         ExpenseRepositoryImp(_expenseDataSourceApi, _expenseDataSourceLocal);
     _getExpenseDataUseCase = GetExpenseDataUseCase(_expenseRepository);
-    // _updateExpensesUseCase = UpdateExpensesUseCase(_expenseRepository);
+    _updateExpensesUseCase = UpdateExpensesUseCase(_expenseRepository);
     _editExpenseUseCase = EditExpenseUseCase(_expenseRepository);
-    // _getExpensesUseCase = GetExpensesUseCase(_expenseRepository);
+    _getExpensesUseCase = GetExpensesUseCase(_expenseRepository);
     _userApp = Hive.box<UserApp>('user_data').values.first;
+    _expenses = Hive.box<Expense>('expenses').values.toList();
     _expense = Hive.box<Expense>('expenses').get(expense) ?? expense;
+  }
+
+  Future<void> updateDatabase() async {
+    await updateExpenses().then((value) async => getExpenses());
   }
 
   Future<void> getExpenseData(Expense expense) async {
@@ -60,25 +69,25 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     emit(ExpenseLoadedState(expense));
   }
 
-  // Future<void> updateExpenses() async {
-  //   emit(ExpenseLoadingState());
-  //   try {
-  //     await _updateExpensesUseCase.call(userApp: _userApp, expenses: _expenses);
-  //   } catch (e) {
-  //     emit(ExpenseErrorState(e.toString()));
-  //   }
-  //   emit(ExpenseLoadedState(expense));
-  // }
+  Future<void> updateExpenses() async {
+    emit(ExpenseLoadingState());
+    try {
+      await _updateExpensesUseCase.call(userApp: _userApp, expenses: _expenses);
+    } catch (e) {
+      emit(ExpenseErrorState(e.toString()));
+    }
+    emit(ExpenseLoadedState(expense));
+  }
 
-  // Future<void> getExpenses() async {
-  //   emit(ExpenseLoadingState());
-  //   try {
-  //     await _getExpensesUseCase.call(userApp: _userApp);
-  //   } catch (e) {
-  //     emit(ExpenseErrorState(e.toString()));
-  //   }
-  //   emit(ExpenseLoadedState(expense));
-  // }
+  Future<void> getExpenses() async {
+    emit(ExpenseLoadingState());
+    try {
+      await _getExpensesUseCase.call(userApp: _userApp);
+    } catch (e) {
+      emit(ExpenseErrorState(e.toString()));
+    }
+    emit(ExpenseLoadedState(expense));
+  }
 
   void isEditing() {
     emit(ExpenseEditingState());
@@ -95,6 +104,7 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     try {
       _expense = await _editExpenseUseCase.call(
           userApp: _userApp, expense: expenseEdited);
+      await updateDatabase();
     } catch (e) {
       emit(ExpenseErrorState(e.toString()));
     }

@@ -7,6 +7,7 @@ import 'package:onfly/presentation/common/widgets/expense_list_tile.dart';
 import 'package:onfly/presentation/corporate_card/screens/corporate_card_page.dart';
 import 'package:onfly/presentation/home/cubit/home_cubit.dart';
 import 'package:onfly/presentation/login/screens/login_page.dart';
+import 'package:onfly/presentation/report/screens/report_chart_page.dart';
 import 'package:onfly/presentation/travels/screens/travels_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -114,6 +115,22 @@ class _HomePageState extends State<HomePage> {
                       },
                       icon: const Icon(
                         Icons.travel_explore,
+                        size: 50,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ReportChartPage(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.bar_chart_rounded,
                         size: 50,
                       ),
                     ),
