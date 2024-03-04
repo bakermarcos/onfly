@@ -67,16 +67,16 @@ class _LoginPageState extends State<LoginPage> {
                   controller: cubit.loginController,
                 ),
                 TextFormField(
-                  obscureText: cubit.passwordVisible,
+                  obscureText: cubit.obscureText,
                   decoration: InputDecoration(
                     labelStyle: const TextStyle(color: Colors.grey),
                     labelText: 'Senha',
                     suffixIcon: IconButton(
                         onPressed: () {
-                          cubit.passwordVisible = !cubit.passwordVisible;
+                          cubit.changeObscureText();
                         },
                         icon: Icon(
-                          cubit.passwordVisible
+                          cubit.obscureText
                               ? Icons.visibility
                               : Icons.visibility_off,
                           color: Colors.grey,
@@ -93,13 +93,14 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () => cubit.login(),
                         child: const Text('Login'),
                       ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextButton(
-                  onPressed: () => cubit.goToRegisterPage(),
-                  child: const Text('Cadastrar'),
-                ),
+                // TODO: Implementar página de cadastro
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // TextButton(
+                //   onPressed: () => cubit.goToRegisterPage(),
+                //   child: const Text('Cadastrar'),
+                // ),
               ],
             ),
           );

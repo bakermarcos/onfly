@@ -21,7 +21,7 @@ class LoginCubit extends Cubit<LoginState> {
   UserApp get userApp => _userApp;
   final TextEditingController loginController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool passwordVisible = false;
+  bool obscureText = true;
   LoginCubit() : super(LoginInitialState());
 
   void init() async {
@@ -37,6 +37,11 @@ class LoginCubit extends Cubit<LoginState> {
 
   void goToRegisterPage() {
     emit(LoginGoToRegisterPageState());
+  }
+
+  void changeObscureText() {
+    obscureText = !obscureText;
+    emit(LoginInitialState());
   }
 
   Future<void> login() async {
