@@ -40,6 +40,8 @@ class _TravelsPageState extends State<TravelsPage> {
           }
           if (state is TravelLoadedState) {
             return ListView.builder(
+              reverse: true,
+              shrinkWrap: true,
               itemCount: cubit.travels.length,
               itemBuilder: (context, index) {
                 return TravelListTile(

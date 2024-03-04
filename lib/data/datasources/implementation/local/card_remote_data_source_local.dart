@@ -21,9 +21,10 @@ class RemoteCardDataSourceLocal implements CardDataSourceLocal {
     if (localCard != null) {
       localCard.balance = balance;
       await cardBox.put(0, localCard);
-      await syncCardBox.clear();
       if (isSync) {
         await syncCardBox.add(localCard);
+      }else{
+        await syncCardBox.clear();
       }
       return localCard.balance;
     }

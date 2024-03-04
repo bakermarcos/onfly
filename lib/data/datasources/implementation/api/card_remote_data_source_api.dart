@@ -16,7 +16,7 @@ class RemoteCardDataSourceApi implements CardDataSourceApi {
     final DatabaseReference ref = _firebaseDatabase.ref('${userApp.id}/card');
 
     try {
-      final cardDataSnapshot = await ref.get();
+      final cardDataSnapshot = await ref.get().timeout(const Duration(seconds: 5));
       card = CorporateCard.fromJson(jsonEncode(cardDataSnapshot.value));
       return card;
     } catch (e) {
@@ -31,7 +31,7 @@ class RemoteCardDataSourceApi implements CardDataSourceApi {
         _firebaseDatabase.ref('${userApp.id}/card/balance');
 
     try {
-      await ref.set(balance);
+      await ref.set(balance).timeout(const Duration(seconds: 5));
       return balance;
     } catch (e) {
       rethrow;

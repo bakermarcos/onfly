@@ -18,9 +18,10 @@ class RemoteTravelDataSourceLocal extends TravelDataSourceLocal {
   @override
   Future<List<Travel>> updateTravels(
       {required List<Travel> travels, bool isSync = false}) async {
-    await syncTravelBox.clear();
     if (isSync) {
       await syncTravelBox.addAll(travels);
+    } else {
+      await syncTravelBox.clear();
     }
     await travelBox.clear();
     await travelBox.addAll(travels);

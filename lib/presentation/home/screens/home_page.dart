@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:onfly/presentation/common/services/logout.dart';
+import 'package:onfly/presentation/common/sync_cubit/sync_cubit.dart';
 import 'package:onfly/presentation/common/widgets/expense_list_tile.dart';
 import 'package:onfly/presentation/corporate_card/screens/corporate_card_page.dart';
 import 'package:onfly/presentation/home/cubit/home_cubit.dart';
+import 'package:onfly/presentation/login/screens/login_page.dart';
 import 'package:onfly/presentation/travels/screens/travels_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,10 +17,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late HomeCubit cubit = HomeCubit();
+  HomeCubit cubit = HomeCubit();
   @override
   void initState() {
     cubit.init();
+    cubit.syncCubit.init();
     super.initState();
   }
 
@@ -26,10 +30,50 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bem vindo, Usuário'),
+        actions: [
+          BlocConsumer<SyncCubit, SyncState>(
+            bloc: cubit.syncCubit,
+            listener: (context, state) {
+              if (state is SyncErrorState) {
+                Fluttertoast.showToast(msg: state.message);
+              }
+            },
+            builder: (context, state) {
+              return IconButton(
+                  onPressed: () async => state is SyncLoadingState
+                      ? null
+                      : await cubit.syncCubit.update(),
+                  icon: state is SyncLoadingState
+                      ? const SizedBox.square(
+                          dimension: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                          ),
+                        )
+                      : const Icon(Icons.sync, color: Colors.deepPurple));
+            },
+          ),
+          IconButton(
+              onPressed: () async {
+                if (await cubit.syncCubit.checkPendingUpdates()) {
+                  Fluttertoast.showToast(
+                      msg: 'Você ainda tem updates pendentes.');
+                } else {
+                  LogoutService.logout()
+                      .then((value) => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ),
+                          ));
+                }
+              },
+              icon: const Icon(Icons.logout)),
+        ],
       ),
       body: BlocConsumer<HomeCubit, HomeState>(
         bloc: cubit,
         listener: (context, state) {
+          cubit.syncCubit.checkPendingUpdates();
           if (state is HomeErrorState) {
             Fluttertoast.showToast(msg: state.message);
           }
@@ -150,6 +194,7 @@ class _HomePageState extends State<HomePage> {
                         )
                       : Expanded(
                           child: ListView.builder(
+                            reverse: true,
                             itemCount: state.expenses.length,
                             itemBuilder: (context, index) {
                               return ExpenseListTile(

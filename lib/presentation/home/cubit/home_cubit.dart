@@ -13,6 +13,7 @@ import 'package:onfly/domain/entities/expense.dart';
 import 'package:onfly/domain/entities/user_app.dart';
 import 'package:onfly/domain/usecases/expense/get_expenses_usecase.dart';
 import 'package:onfly/domain/usecases/expense/update_expenses_usecase.dart';
+import 'package:onfly/presentation/common/sync_cubit/sync_cubit.dart';
 
 part 'home_state.dart';
 
@@ -32,6 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
   final TextEditingController dateController = TextEditingController();
   final TextEditingController valueController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
+  final SyncCubit syncCubit = SyncCubit();
   HomeCubit() : super(HomeInitialState());
 
   void init() async {
@@ -57,8 +59,8 @@ class HomeCubit extends Cubit<HomeState> {
         category: categoryController.text);
     if (!_checkExpenseExist(newExpense)) {
       _expenses.add(newExpense);
-      await updateExpenses();
       emit(HomePopBottomSheetState());
+      await updateExpenses();
       emit(HomeLoadedState(expenses));
     } else {
       emit(HomeErrorState('Essa despesa já foi adicionada'));

@@ -56,7 +56,7 @@ class CorporateCardCubit extends Cubit<CorporateCardState> {
     emit(LoadingCorporateCardState());
     calculateNewBalance();
     try {
-      await _updateBalanceUseCase.call(
+      _card.balance = await _updateBalanceUseCase.call(
           userApp: _userApp, balance: _card.balance, card: _card);
     } catch (e) {
       emit(ErrorCorporateCardState(e.toString()));
@@ -67,7 +67,7 @@ class CorporateCardCubit extends Cubit<CorporateCardState> {
   Future<void> getCardData() async {
     emit(LoadingCorporateCardState());
     try {
-      await _getCardDataUseCase.call(userApp: _userApp, card: _card);
+      _card = await _getCardDataUseCase.call(userApp: _userApp, card: _card);
     } catch (e) {
       emit(ErrorCorporateCardState(e.toString()));
     }

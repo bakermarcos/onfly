@@ -51,7 +51,11 @@ class _CorporateCardPageState extends State<CorporateCardPage> {
                   ),
                   Text(
                     'R\$ ${state.card.balance.toString().replaceAll('.', ',')}',
-                    style: TextStyle(fontSize: 15),
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                  Text(
+                    '**** ${state.card.cardNumber.toString().substring(12)}',
+                    style: const TextStyle(fontSize: 15),
                   ),
                   const SizedBox(
                     height: 10,
@@ -62,6 +66,8 @@ class _CorporateCardPageState extends State<CorporateCardPage> {
                   ),
                   Expanded(
                       child: ListView.builder(
+                          reverse: true,
+                          shrinkWrap: true,
                           itemCount: state.expenses.length,
                           itemBuilder: (context, index) {
                             return ExpenseListTile(

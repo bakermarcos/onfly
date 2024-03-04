@@ -52,7 +52,8 @@ class ExpenseCubit extends Cubit<ExpenseState> {
   Future<void> getExpenseData(Expense expense) async {
     emit(ExpenseLoadingState());
     try {
-      await _getExpenseDataUseCase.call(userApp: _userApp, expense: expense);
+      _expense = await _getExpenseDataUseCase.call(
+          userApp: _userApp, expense: expense);
     } catch (e) {
       emit(ExpenseErrorState(e.toString()));
     }
@@ -92,7 +93,8 @@ class ExpenseCubit extends Cubit<ExpenseState> {
         value: valueController.text,
         category: categoryController.text);
     try {
-      await _editExpenseUseCase.call(userApp: _userApp, expense: expenseEdited);
+      _expense = await _editExpenseUseCase.call(
+          userApp: _userApp, expense: expenseEdited);
     } catch (e) {
       emit(ExpenseErrorState(e.toString()));
     }

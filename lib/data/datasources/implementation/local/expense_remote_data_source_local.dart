@@ -36,9 +36,10 @@ class RemoteExpenseDataSourceLocal implements ExpenseDataSourceLocal {
   @override
   Future<List<Expense>> updateExpenses(
       {required List<Expense> expenses, bool isSync = false}) async {
-    syncExpenseBox.clear();
     if (isSync) {
       await syncExpenseBox.addAll(expenses);
+    } else {
+      syncExpenseBox.clear();
     }
     await expenseBox.clear();
     await expenseBox.addAll(expenses);

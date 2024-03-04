@@ -15,7 +15,7 @@ class RemoteTravelDataSourceApi implements TravelDataSourceApi {
         _firebaseDatabase.ref('${userApp.id}/travels/${travel.id}');
 
     try {
-      final travelDataSnapshot = await ref.get();
+      final travelDataSnapshot = await ref.get().timeout(const Duration(seconds: 5));
       travel = Travel.fromJson(jsonDecode(travelDataSnapshot.value as String));
       return travel;
     } catch (e) {
@@ -30,7 +30,7 @@ class RemoteTravelDataSourceApi implements TravelDataSourceApi {
         _firebaseDatabase.ref('${userApp.id}/travels');
 
     try {
-      final travelsSnapshot = await ref.get();
+      final travelsSnapshot = await ref.get().timeout(const Duration(seconds: 5));
       for (var travel in travelsSnapshot.value as List) {
         travels.add(Travel.fromJson(jsonEncode(travel)));
       }
@@ -46,7 +46,7 @@ class RemoteTravelDataSourceApi implements TravelDataSourceApi {
     final DatabaseReference ref =
         _firebaseDatabase.ref('${userApp.id}/travels');
     try {
-      final travelsSnapshot = await ref.get();
+      final travelsSnapshot = await ref.get().timeout(const Duration(seconds: 5));
       if (travels == travelsSnapshot.value as List ||
           travels.length > (travelsSnapshot.value as List).length) {
         await ref.set(travels);

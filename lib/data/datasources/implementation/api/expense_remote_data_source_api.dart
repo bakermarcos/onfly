@@ -15,7 +15,7 @@ class RemoteExpenseDataSourceApi implements ExpenseDataSourceApi {
         _firebaseDatabase.ref('${userApp.id}/expenses/${expense.id}');
 
     try {
-      await ref.set(expense);
+      await ref.set(expense).timeout(const Duration(seconds: 5));
       return expense;
     } catch (e) {
       rethrow;
@@ -29,7 +29,7 @@ class RemoteExpenseDataSourceApi implements ExpenseDataSourceApi {
         _firebaseDatabase.ref('${userApp.id}/expenses/${expense.id}');
 
     try {
-      final expenseDataSnapshot = await ref.get();
+      final expenseDataSnapshot = await ref.get().timeout(const Duration(seconds: 5));
       expense = Expense.fromJson(expenseDataSnapshot.value as String);
       return expense;
     } catch (e) {
@@ -44,7 +44,7 @@ class RemoteExpenseDataSourceApi implements ExpenseDataSourceApi {
         _firebaseDatabase.ref('${userApp.id}/expenses');
 
     try {
-      final expensesSnapshot = await ref.get();
+      final expensesSnapshot = await ref.get().timeout(const Duration(seconds: 5));
       final auxList = (expensesSnapshot.value as List);
 
       for (var expense in auxList) {
@@ -62,7 +62,7 @@ class RemoteExpenseDataSourceApi implements ExpenseDataSourceApi {
     final DatabaseReference ref =
         _firebaseDatabase.ref('${userApp.id}/expenses');
     try {
-      final expensesSnapshot = await ref.get();
+      final expensesSnapshot = await ref.get().timeout(const Duration(seconds: 5));
       final auxList = (expensesSnapshot.value as List);
 
       if (expenses == auxList || expenses.length > auxList.length) {
